@@ -1,4 +1,8 @@
+pub mod errors;
 pub mod models;
+pub mod parser;
+
+pub use errors::ParseError;
 pub use models::{Lesson, Subject, Term, TimetabledLesson};
 
 use reqwest::Client;
