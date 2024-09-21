@@ -1,7 +1,11 @@
 use scraper::error::SelectorErrorKind;
+use thiserror::Error;
 
+#[derive(Error, Debug)]
 pub enum ParseError {
+    #[error("An error occured while parsing a `scraper` selector")]
     SelectorError,
+    #[error("An error occured while parsing a date/time/weekday")]
     ChronoParseError,
 }
 

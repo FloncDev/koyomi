@@ -968,6 +968,7 @@ dependencies = [
  "reqwest",
  "scraper",
  "sqlx",
+ "thiserror",
  "tokio",
  "tracing",
  "tracing-subscriber",
