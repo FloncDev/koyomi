@@ -1,6 +1,7 @@
 pub mod errors;
 pub mod models;
 pub mod parser;
+pub mod timetable_loop;
 
 pub use errors::ParseError;
 pub use models::{Lesson, Subject, Term, TimetabledLesson};
