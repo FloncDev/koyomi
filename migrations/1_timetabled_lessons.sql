@@ -1,6 +1,6 @@
 create table if not exists timetabled_lessons (
     id serial primary key,
-    subject_id integer references subjects not null,
+    subject varchar(255) not null,
     teachers text not null,
     location varchar(8) not null,
     start time not null,

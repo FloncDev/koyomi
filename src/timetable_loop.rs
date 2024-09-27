@@ -35,6 +35,6 @@ pub async fn timetample_loop(state: AppState) {
 
         let timetable = parse_timetable(&html).unwrap();
 
-        tracing::debug!("Ticked")
+        tracing::debug!("Ticked");
     }
 }

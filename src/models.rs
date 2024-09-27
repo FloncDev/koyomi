@@ -26,5 +26,6 @@ pub struct TimetabledLesson {
 #[derive(Debug)]
 pub struct Lesson {
     pub timetabled_lesson: TimetabledLesson,
+    pub date: NaiveDate,
     pub uid: Uuid,
 }
