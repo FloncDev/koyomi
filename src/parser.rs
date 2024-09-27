@@ -6,7 +6,11 @@ use crate::{ParseError, TimetabledLesson};
 
 pub fn parse_timetable(html: &str) -> Result<Vec<TimetabledLesson>, ParseError> {
     let regex =
-        Regex::new(r"<strong>(.*?) - (.*?):<\/strong> (.*?) in (.*?) with  (.*?$)").unwrap();
+        // I love regex...
+        // Regex::new(r"<strong>(.*?) - (.*?):<\/strong> (.*?) in (.*?) with  (.*?$)").unwrap();
+        // Regex::new(r"<strong>(.*?) - (.*?):<\/strong> (.*?) in (.*?) with  ((?:\w+(?: +\w)*)*?)(?=\s|$)").unwrap();
+        // Regex::new(r"<strong>(.*?) - (.*?):<\/strong> (.*?) in (.*?) with  ((?:\S+(?: +\w)*)*?)(?:\s{2,}|$)").unwrap();
+        Regex::new(r"<strong>(.*?) - (.*?):<\/strong> (.*?) in (.*?) with  ((?:[a-zA-Z0-9_\-\/]+(?: +[a-zA-Z0-9_\-\/])*)*?)(?:\s{2,}|$)").unwrap();
 
     let html = Html::parse_fragment(html);
 
@@ -23,6 +27,7 @@ pub fn parse_timetable(html: &str) -> Result<Vec<TimetabledLesson>, ParseError> 
 
         for lesson in day.select(&Selector::parse("li")?) {
             let inner_html = lesson.inner_html();
+
             let captures = regex
                 .captures(inner_html.trim())
                 .expect("Could not capture information from lesson string")
