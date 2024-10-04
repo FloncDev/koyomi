@@ -45,12 +45,13 @@ pub fn parse_timetable(html: &str) -> Result<Vec<TimetabledLesson>, ParseError> 
                 let end = NaiveTime::parse_from_str(end, "%H:%M")?;
 
                 lessons.push(TimetabledLesson {
+                    id: 0,
                     start,
                     end,
                     location: location.clone(),
                     teachers: teachers.clone(),
                     subject: name.clone(),
-                    weekday: weekday as i32,
+                    weekday: weekday as i16,
                 })
             } else {
                 tracing::error!(

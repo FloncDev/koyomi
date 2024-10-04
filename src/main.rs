@@ -3,13 +3,18 @@ use dotenvy::var;
 use koyomi::{timetable_loop::timetample_loop, AppState};
 use reqwest::{header::HeaderMap, Client};
 use sqlx::postgres::PgPoolOptions;
+use tracing_subscriber::{fmt, prelude::*, EnvFilter};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tracing_subscriber::fmt().init();
+    tracing_subscriber::registry()
+        .with(fmt::layer())
+        .with(EnvFilter::from_default_env())
+        .init();
     dotenvy::dotenv().expect("Could not find .env file");
 
     // Setup state
+    tracing::debug!("Attempting database connection");
     let pool = PgPoolOptions::new()
         .connect(
             var("DATABASE_URL")
@@ -18,6 +23,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .await
         .expect("Error connecting to database");
+    tracing::info!("Connected to database");
 
     let mut headers = HeaderMap::new();
     headers.append(
