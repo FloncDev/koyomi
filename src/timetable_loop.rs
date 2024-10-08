@@ -32,6 +32,8 @@ pub async fn timetample_loop(state: AppState) {
             .unwrap();
 
         // TODO: Figure out what to do with expired tokens
+        // Might write some web extension to automatically get
+        // my token from my prowser
         if response.url().as_str() != url {
             tracing::error!("Session token expired");
             panic!()
@@ -63,7 +65,6 @@ pub async fn timetample_loop(state: AppState) {
 
         tracing::debug!("Updating database");
         for lesson in to_add {
-            // TODO: fix this
             tracing::debug!("Adding {} to database", lesson.subject);
             sqlx::query!(
                 r#"
