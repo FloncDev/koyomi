@@ -1,4 +1,5 @@
-use crate::{parser::parse_timetable, AppState, TimetabledLesson};
+use crate::{parser::parse_timetable, AppState};
+use chrono::{Datelike, Local};
 use dotenvy::var;
 use std::{collections::HashMap, time::Duration};
 use tokio::time;
@@ -18,9 +19,11 @@ pub async fn timetample_loop(state: AppState) {
 
         let mut form = HashMap::new();
 
-        let week_starting = "2024-09-23";
+        let now = Local::now();
+        let monday = now - chrono::Duration::days(now.weekday().num_days_from_monday().into());
+        let week_starting = &monday.format("%Y-%m-%d").to_string();
 
-        form.insert("week", week_starting);
+        form.insert("week", week_starting.as_str());
         form.insert("student_user_id", &student_id);
 
         let response = state
@@ -40,57 +43,36 @@ pub async fn timetample_loop(state: AppState) {
         }
 
         tracing::debug!(
-            "Recieved response from server. status={}",
+            "Recieved response from {}. status={}",
+            response.url(),
             response.status()
         );
 
         let html = response.text().await.unwrap();
 
-        let timetable = parse_timetable(&html).unwrap();
+        let lessons = parse_timetable(&html, monday.date_naive()).unwrap();
+        tracing::debug!("Found {} lessons for {}", lessons.len(), week_starting);
 
-        let current_lessons = sqlx::query_as!(TimetabledLesson, "SELECT * FROM timetabled_lessons")
-            .fetch_all(&state.pool)
-            .await
-            .unwrap();
-
-        let to_add: Vec<&TimetabledLesson> = timetable
-            .iter()
-            .filter(|lesson| !current_lessons.contains(lesson))
-            .collect();
-
-        let to_remove: Vec<&TimetabledLesson> = current_lessons
-            .iter()
-            .filter(|lesson| !timetable.contains(lesson))
-            .collect();
-
-        tracing::debug!("Updating database");
-        for lesson in to_add {
-            tracing::debug!("Adding {} to database", lesson.subject);
+        for lesson in lessons {
             sqlx::query!(
                 r#"
-            INSERT INTO timetabled_lessons
-            (subject, teachers, location, start, "end", weekday)
-            VALUES
-            ($1, $2, $3, $4, $5, $6)
+                insert into lessons
+                    (subject, teachers, location, start, "end", uid)
+                select $1, $2, $3, $4, $5, $6
+                where not exists (
+                    select id from lessons where subject = $2 and start = $4
+                )
             "#,
                 lesson.subject,
                 lesson.teachers,
                 lesson.location,
                 lesson.start,
                 lesson.end,
-                lesson.weekday
+                lesson.uid
             )
             .execute(&state.pool)
             .await
             .unwrap();
-        }
-
-        for lesson in to_remove {
-            tracing::debug!("Removing {} from database", lesson.subject);
-            sqlx::query!("DELETE FROM timetabled_lessons WHERE id = $1", lesson.id)
-                .execute(&state.pool)
-                .await
-                .unwrap();
         }
 
         tracing::debug!("Ticked");

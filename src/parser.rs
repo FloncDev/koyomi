@@ -1,15 +1,12 @@
-use chrono::{NaiveTime, Weekday};
+use chrono::{Duration, Local, NaiveDate, NaiveDateTime, NaiveTime, Weekday};
 use regex::Regex;
 use scraper::{Html, Selector};
+use uuid::Uuid;
 
-use crate::{ParseError, TimetabledLesson};
+use crate::{Lesson, ParseError};
 
-pub fn parse_timetable(html: &str) -> Result<Vec<TimetabledLesson>, ParseError> {
+pub fn parse_timetable(html: &str, monday: NaiveDate) -> Result<Vec<Lesson>, ParseError> {
     let regex =
-        // I love regex...
-        // Regex::new(r"<strong>(.*?) - (.*?):<\/strong> (.*?) in (.*?) with  (.*?$)").unwrap();
-        // Regex::new(r"<strong>(.*?) - (.*?):<\/strong> (.*?) in (.*?) with  ((?:\w+(?: +\w)*)*?)(?=\s|$)").unwrap();
-        // Regex::new(r"<strong>(.*?) - (.*?):<\/strong> (.*?) in (.*?) with  ((?:\S+(?: +\w)*)*?)(?:\s{2,}|$)").unwrap();
         Regex::new(r"<strong>(.*?) - (.*?):<\/strong> (.*?) in (.*?) with  ((?:[a-zA-Z0-9_\-\/]+(?: +[a-zA-Z0-9_\-\/])*)*?)(?:\s{2,}|$)").unwrap();
 
     let html = Html::parse_fragment(html);
@@ -28,6 +25,8 @@ pub fn parse_timetable(html: &str) -> Result<Vec<TimetabledLesson>, ParseError> 
         for lesson in day.select(&Selector::parse("li")?) {
             let inner_html = lesson.inner_html();
 
+            let day = monday + Duration::days(weekday.into());
+
             let captures = regex
                 .captures(inner_html.trim())
                 .expect("Could not capture information from lesson string")
@@ -41,10 +40,14 @@ pub fn parse_timetable(html: &str) -> Result<Vec<TimetabledLesson>, ParseError> 
                 .collect::<Vec<String>>();
 
             if let [_, start, end, name, location, teachers] = &captures[..] {
-                let start = NaiveTime::parse_from_str(start, "%H:%M")?;
-                let end = NaiveTime::parse_from_str(end, "%H:%M")?;
+                let start = NaiveDateTime::new(day, NaiveTime::parse_from_str(start, "%H:%M")?)
+                    .and_local_timezone(Local)
+                    .unwrap();
+                let end = NaiveDateTime::new(day, NaiveTime::parse_from_str(end, "%H:%M")?)
+                    .and_local_timezone(Local)
+                    .unwrap();
 
-                lessons.push(TimetabledLesson {
+                lessons.push(Lesson {
                     id: 0,
                     start,
                     end,
@@ -52,6 +55,7 @@ pub fn parse_timetable(html: &str) -> Result<Vec<TimetabledLesson>, ParseError> 
                     teachers: teachers.clone(),
                     subject: name.clone(),
                     weekday: weekday as i16,
+                    uid: Uuid::new_v4(),
                 })
             } else {
                 tracing::error!(
