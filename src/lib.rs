@@ -4,7 +4,7 @@ pub mod parser;
 pub mod timetable_loop;
 
 pub use errors::ParseError;
-pub use models::{Lesson, Term, TimetabledLesson};
+pub use models::{Lesson, Term};
 
 use reqwest::Client;
 use sqlx::{Pool, Postgres};

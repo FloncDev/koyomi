@@ -1,4 +1,4 @@
-use chrono::{NaiveDate, NaiveTime};
+use chrono::{DateTime, Local, NaiveDate};
 use uuid::Uuid;
 
 #[derive(Debug)]
@@ -10,18 +10,19 @@ pub struct Term {
 }
 
 #[derive(Debug)]
-pub struct TimetabledLesson {
+pub struct Lesson {
     pub id: i32,
     pub subject: String,
     pub teachers: String,
     pub location: String,
-    pub start: NaiveTime,
-    pub end: NaiveTime,
+    pub start: DateTime<Local>,
+    pub end: DateTime<Local>,
     pub weekday: i16,
+    pub uid: Uuid,
 }
 
 // Had to implement by myself because I need to ignore id
-impl PartialEq for TimetabledLesson {
+impl PartialEq for Lesson {
     fn eq(&self, other: &Self) -> bool {
         if (
             &self.subject,
@@ -43,12 +44,4 @@ impl PartialEq for TimetabledLesson {
 
         false
     }
-}
-
-#[derive(Debug)]
-pub struct Lesson {
-    pub id: i32,
-    pub timetabled_lesson: TimetabledLesson,
-    pub date: NaiveDate,
-    pub uid: Uuid,
 }
