@@ -1,0 +1,14 @@
+[package]
+name = "koyomi-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sqlx = { version = "0.8.2", features = [
+  "chrono",
+  "postgres",
+  "runtime-tokio",
+  "uuid",
+] }
+uuid = { version = "1.10.0", features = ["v4"] }
+chrono = "0.4.38"

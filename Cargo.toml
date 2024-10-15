@@ -1,20 +1,23 @@
-[package]
-name = "koyomi"
-version = "0.1.0"
-edition = "2021"
+[workspace]
+resolver = "2"
+members = ["koyomi-core", "koyomi-scraper"]
 
-[dependencies]
-axum = "0.7.5"
-chrono = "0.4.38"
-dotenvy = "0.15.7"
-icalendar = "0.16.5"
-postgres = "0.19.8"
-regex = "1.10.6"
-reqwest = "0.12.7"
-scraper = "0.20.0"
-sqlx = { version = "0.8.2", features = ["chrono", "postgres", "runtime-tokio", "uuid"] }
-thiserror = "1.0.63"
-tokio = { version = "1.40.0", features = ["full"] }
-tracing = "0.1.40"
-tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
-uuid = { version = "1.10.0", features = ["v4"] }
+# [dependencies]
+# axum = "0.7.5"
+# chrono = "0.4.38"
+# dotenvy = "0.15.7"
+# icalendar = "0.16.5"
+# regex = "1.10.6"
+# reqwest = "0.12.7"
+# scraper = "0.20.0"
+# sqlx = { version = "0.8.2", features = [
+#   "chrono",
+#   "postgres",
+#   "runtime-tokio",
+#   "uuid",
+# ] }
+# thiserror = "1.0.63"
+# tokio = { version = "1.40.0", features = ["full"] }
+# tracing = "0.1.40"
+# tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+# uuid = { version = "1.10.0", features = ["v4"] }

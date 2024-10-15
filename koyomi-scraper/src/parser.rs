@@ -3,7 +3,8 @@ use regex::Regex;
 use scraper::{Html, Selector};
 use uuid::Uuid;
 
-use crate::{Lesson, ParseError};
+use koyomi_core::Lesson;
+use crate::ParseError;
 
 pub fn parse_timetable(html: &str, monday: NaiveDate) -> Result<Vec<Lesson>, ParseError> {
     let regex =

@@ -1,5 +1,3 @@
-CREATE EXTENSION "pgcrypto";
-
 create table if not exists lessons (
     id serial primary key,
     subject varchar(255) not null,

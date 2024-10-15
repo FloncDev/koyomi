@@ -11,7 +11,8 @@ pub async fn timetample_loop(state: AppState) {
     let student_id = var("STUDENT_ID").expect("STUDENT_ID not set");
     let url = var("ENDPOINT").expect("ENDPOINT not set");
 
-    tracing::debug!("Starting loop");
+    // sqlx::query!("SELECT * FROM lessons;").execute(&state.pool).await?;
+    // tracing::debug!("Starting loop");
 
     // TODO: Remove unwraps as this needs to run forever
     loop {
@@ -56,13 +57,13 @@ pub async fn timetample_loop(state: AppState) {
         for lesson in lessons {
             sqlx::query!(
                 r#"
-                insert into lessons
-                    (subject, teachers, location, start, "end", uid)
-                select $1, $2, $3, $4, $5, $6
-                where not exists (
-                    select id from lessons where subject = $2 and start = $4
-                )
-            "#,
+                    insert into lessons
+                        (subject, teachers, location, start, "end", uid)
+                    select $1, $2, $3, $4, $5, $6
+                    where not exists (
+                        select id from lessons where subject = $2 and start = $4
+                    )
+                "#,
                 lesson.subject,
                 lesson.teachers,
                 lesson.location,
