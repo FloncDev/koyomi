@@ -1,6 +1,6 @@
 use chrono::{DateTime, Local, NaiveDate};
 use koyomi_core::Lesson;
-use koyomi_scraper::{parser::parse_timetable, ParseError};
+use koyomi_scraper::parser::parse_timetable;
 
 // Just has plain timetable data, no marks e.g. "Present"
 #[test]
