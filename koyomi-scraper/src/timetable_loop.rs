@@ -11,8 +11,7 @@ pub async fn timetample_loop(state: AppState) {
     let student_id = var("STUDENT_ID").expect("STUDENT_ID not set");
     let url = var("ENDPOINT").expect("ENDPOINT not set");
 
-    // sqlx::query!("SELECT * FROM lessons;").execute(&state.pool).await?;
-    // tracing::debug!("Starting loop");
+    tracing::debug!("Starting loop");
 
     // TODO: Remove unwraps as this needs to run forever
     loop {
@@ -21,7 +20,17 @@ pub async fn timetample_loop(state: AppState) {
         let mut form = HashMap::new();
 
         let now = Local::now();
-        let monday = now - chrono::Duration::days(now.weekday().num_days_from_monday().into());
+        let mut monday = now - chrono::Duration::days(now.weekday().num_days_from_monday().into());
+
+        // EXTREME edgecase, only happens like 2 weeks every year, for an hour a day
+        // (ofcourse due to daylight savings)
+        if monday.offset() != now.offset() {
+            tracing::debug!("{}", monday);
+            monday -= chrono::Duration::seconds(
+                (now.offset().utc_minus_local() - monday.offset().utc_minus_local()).into(),
+            );
+        }
+
         let week_starting = &monday.format("%Y-%m-%d").to_string();
 
         form.insert("week", week_starting.as_str());
