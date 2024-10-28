@@ -4,6 +4,5 @@ create table if not exists lessons (
     teachers text not null,
     location varchar(32) not null,
     start timestamp with time zone not null,
-    "end" timestamp with time zone not null,
-    uid uuid not null
+    "end" timestamp with time zone not null
 )

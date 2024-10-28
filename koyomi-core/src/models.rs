@@ -1,5 +1,4 @@
 use chrono::{DateTime, Local, NaiveDate};
-use uuid::Uuid;
 
 #[derive(Debug)]
 pub struct Term {
@@ -11,13 +10,12 @@ pub struct Term {
 
 #[derive(Debug)]
 pub struct Lesson {
-    pub id: i32,
+    pub id: Option<i32>,
     pub subject: String,
     pub teachers: String,
     pub location: String,
     pub start: DateTime<Local>,
     pub end: DateTime<Local>,
-    pub uid: Uuid,
 }
 
 // Had to implement by myself because I need to ignore id

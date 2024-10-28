@@ -67,8 +67,8 @@ pub async fn timetample_loop(state: AppState) {
             sqlx::query!(
                 r#"
                     insert into lessons
-                        (subject, teachers, location, start, "end", uid)
-                    select $1, $2, $3, $4, $5, $6
+                        (subject, teachers, location, start, "end")
+                    select $1, $2, $3, $4, $5
                     where not exists (
                         select id from lessons where subject = $2 and start = $4
                     )
@@ -78,7 +78,6 @@ pub async fn timetample_loop(state: AppState) {
                 lesson.location,
                 lesson.start,
                 lesson.end,
-                lesson.uid
             )
             .execute(&state.pool)
             .await

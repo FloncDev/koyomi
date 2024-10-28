@@ -33,7 +33,7 @@ fn simple_week() {
         timetable,
         Ok(vec![
             Lesson {
-                id: 0,
+                id: None,
                 subject: String::from("Maths"),
                 start: DateTime::from_timestamp(1730106000, 0)
                     .unwrap()
@@ -43,11 +43,9 @@ fn simple_week() {
                     .with_timezone(&Local),
                 location: String::from("A123"),
                 teachers: String::from("A Teacher"),
-                // uid is not compared
-                uid: uuid::Uuid::new_v4(),
             },
             Lesson {
-                id: 0,
+                id: None,
                 subject: String::from("Maths"),
                 start: DateTime::from_timestamp(1730111400, 0)
                     .unwrap()
@@ -57,10 +55,9 @@ fn simple_week() {
                     .with_timezone(&Local),
                 location: String::from("A123"),
                 teachers: String::from("A Teacher"),
-                uid: uuid::Uuid::new_v4(),
             },
             Lesson {
-                id: 0,
+                id: None,
                 subject: String::from("Tutorial (A12)"),
                 start: DateTime::from_timestamp(1730115300, 0)
                     .unwrap()
@@ -70,7 +67,6 @@ fn simple_week() {
                     .with_timezone(&Local),
                 location: String::from("B123"),
                 teachers: String::from("B Teacher"),
-                uid: uuid::Uuid::new_v4(),
             },
         ])
     )
@@ -120,7 +116,7 @@ fn marked_week() {
         timetable,
         Ok(vec![
             Lesson {
-                id: 0,
+                id: None,
                 subject: String::from("Maths"),
                 start: DateTime::from_timestamp(1730106000, 0)
                     .unwrap()
@@ -130,11 +126,9 @@ fn marked_week() {
                     .with_timezone(&Local),
                 location: String::from("A123"),
                 teachers: String::from("A Teacher"),
-                // uid is not compared
-                uid: uuid::Uuid::new_v4(),
             },
             Lesson {
-                id: 0,
+                id: None,
                 subject: String::from("Maths"),
                 start: DateTime::from_timestamp(1730111400, 0)
                     .unwrap()
@@ -144,10 +138,9 @@ fn marked_week() {
                     .with_timezone(&Local),
                 location: String::from("A123"),
                 teachers: String::from("A Teacher"),
-                uid: uuid::Uuid::new_v4(),
             },
             Lesson {
-                id: 0,
+                id: None,
                 subject: String::from("Tutorial (A12)"),
                 start: DateTime::from_timestamp(1730115300, 0)
                     .unwrap()
@@ -157,10 +150,9 @@ fn marked_week() {
                     .with_timezone(&Local),
                 location: String::from("B123"),
                 teachers: String::from("B Teacher"),
-                uid: uuid::Uuid::new_v4(),
             },
             Lesson {
-                id: 0,
+                id: None,
                 subject: String::from("Lesson"),
                 start: DateTime::from_timestamp(1730457000, 0)
                     .unwrap()
@@ -170,7 +162,6 @@ fn marked_week() {
                     .with_timezone(&Local),
                 location: String::from("A123"),
                 teachers: String::from("A Teacher / B Teacher"),
-                uid: uuid::Uuid::new_v4(),
             },
         ])
     )

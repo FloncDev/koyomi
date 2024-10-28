@@ -1,7 +1,6 @@
 use chrono::{Duration, Local, NaiveDate, NaiveDateTime, NaiveTime, Weekday};
 use regex::Regex;
 use scraper::{Html, Selector};
-use uuid::Uuid;
 
 use crate::ParseError;
 use koyomi_core::Lesson;
@@ -49,13 +48,12 @@ pub fn parse_timetable(html: &str, monday: NaiveDate) -> Result<Vec<Lesson>, Par
                     .unwrap();
 
                 lessons.push(Lesson {
-                    id: 0,
+                    id: None,
                     start,
                     end,
                     location: location.clone(),
                     teachers: teachers.clone(),
                     subject: name.clone(),
-                    uid: Uuid::new_v4(),
                 })
             } else {
                 tracing::error!(
