@@ -1,7 +1,7 @@
 use scraper::error::SelectorErrorKind;
 use thiserror::Error;
 
-#[derive(Error, Debug)]
+#[derive(Error, Debug, PartialEq, Eq)]
 pub enum ParseError {
     #[error("An error occured while parsing a `scraper` selector")]
     SelectorError,
