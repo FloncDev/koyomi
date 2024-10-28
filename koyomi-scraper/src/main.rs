@@ -37,25 +37,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let state = AppState { pool, scraper };
 
-    // Spawn the loop
-    tokio::task::spawn(timetample_loop(state.clone()));
-
-    // let app = Router::new()
-    //     .route("/", get(|| async { "Hello, World!" }))
-    //     .with_state(state);
-    //
-    // let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
-    //     .await
-    //     .expect("Cannot bind to port 3000");
-
-    // tracing::info!(
-    //     "Running server on http://{}",
-    //     listener.local_addr().unwrap()
-    // );
-
-    // axum::serve(listener, app.into_make_service())
-    //     .await
-    //     .unwrap();
+    timetample_loop(state.clone()).await;
 
     Ok(())
 }
