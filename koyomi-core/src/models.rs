@@ -17,7 +17,6 @@ pub struct Lesson {
     pub location: String,
     pub start: DateTime<Local>,
     pub end: DateTime<Local>,
-    pub weekday: i16,
     pub uid: Uuid,
 }
 
@@ -30,14 +29,12 @@ impl PartialEq for Lesson {
             &self.location,
             &self.start,
             &self.end,
-            &self.weekday,
         ) == (
             &other.subject,
             &other.teachers,
             &other.location,
             &other.start,
             &other.end,
-            &other.weekday,
         ) {
             return true;
         }
