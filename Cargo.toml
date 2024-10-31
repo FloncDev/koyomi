@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["koyomi-core", "koyomi-scraper"]
+members = [ "koyomi-api","koyomi-core", "koyomi-scraper"]
 
 # [dependencies]
 # axum = "0.7.5"

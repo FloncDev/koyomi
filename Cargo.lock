@@ -841,6 +841,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "koyomi-api"
+version = "0.1.0"
+
+[[package]]
 name = "koyomi-core"
 version = "0.1.0"
 dependencies = [
