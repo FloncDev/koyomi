@@ -1,0 +1,18 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                        insert into lessons\n                            (subject, teachers, location, start, \"end\")\n                        select $1, $2, $3, $4, $5\n                        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Text",
+        "Varchar",
+        "Timestamptz",
+        "Timestamptz"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "681e96a6abfaaba04e9d84c9c378f78c8e6ea9fcec89652670ca249879553103"
+}

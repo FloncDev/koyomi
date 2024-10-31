@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                            update lessons\n                            set\n                                subject = $1,\n                                teachers = $2,\n                                location = $3,\n                                \"end\" = $4\n                            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Text",
+        "Varchar",
+        "Timestamptz"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "cc9bfd7e4c21bfe53242b362372c23743c0a9ff72d3c97dc686e2ebefbf56bc8"
+}

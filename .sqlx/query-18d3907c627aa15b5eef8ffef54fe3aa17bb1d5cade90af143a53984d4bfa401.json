@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                delete from lessons\n                where\n                    id = $1\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "18d3907c627aa15b5eef8ffef54fe3aa17bb1d5cade90af143a53984d4bfa401"
+}
