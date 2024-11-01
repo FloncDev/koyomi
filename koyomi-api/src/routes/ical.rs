@@ -1,4 +1,4 @@
-use axum::{response::IntoResponse, routing::get, Router};
+use axum::{extract::State, http::StatusCode, routing::get, Router};
 use icalendar::{Calendar, Component, Event, EventLike};
 use koyomi_core::Lesson;
 
@@ -24,7 +24,20 @@ pub fn generate_calendar(lessons: Vec<Lesson>) -> Calendar {
     calendar
 }
 
-async fn get_ical() -> impl IntoResponse {}
+async fn get_ical(State(state): State<AppState>) -> Result<String, StatusCode> {
+    let lessons = match sqlx::query_as!(Lesson, "select * from lessons")
+        .fetch_all(&state.pool)
+        .await
+    {
+        Ok(lessons) => lessons,
+        Err(err) => {
+            tracing::error!("An error occured while fetching lessons {:#?}", err);
+            return Err(StatusCode::INTERNAL_SERVER_ERROR);
+        }
+    };
+
+    Ok(generate_calendar(lessons).to_string())
+}
 
 pub fn get_router() -> Router<AppState> {
     Router::new().route("/calendar.ical", get(get_ical))

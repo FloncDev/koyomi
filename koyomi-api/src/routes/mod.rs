@@ -5,5 +5,5 @@ use crate::AppState;
 pub mod ical;
 
 pub fn get_router() -> Router<AppState> {
-    Router::new()
+    Router::new().merge(ical::get_router())
 }
