@@ -9,7 +9,7 @@ fn simple_timetable() {
     let end = start + Duration::hours(1);
     let lessons = vec![
         Lesson {
-            id: None,
+            id: Some(1),
             subject: String::from("Math"),
             teachers: String::from("Math Teacher"),
             location: String::from("A123"),
@@ -17,7 +17,7 @@ fn simple_timetable() {
             end,
         },
         Lesson {
-            id: None,
+            id: Some(2),
             subject: String::from("Computer Science"),
             teachers: String::from("CS Teacher"),
             location: String::from("B123"),
@@ -34,7 +34,7 @@ fn simple_timetable() {
                 .location("A123")
                 .starts(start.to_utc())
                 .ends(end.to_utc())
-                .uid(format!("Math-{}-{}", start, end).as_str())
+                .uid("Math-1")
                 .done(),
         )
         .push(
@@ -44,7 +44,7 @@ fn simple_timetable() {
                 .location("B123")
                 .starts(end.to_utc())
                 .ends((end + Duration::hours(1)).to_utc())
-                .uid(format!("Computer Science-{}-{}", end, end + Duration::hours(1)).as_str())
+                .uid("Computer Science-2")
                 .done(),
         )
         .done();

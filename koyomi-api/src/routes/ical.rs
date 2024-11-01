@@ -16,7 +16,7 @@ pub fn generate_calendar(lessons: Vec<Lesson>) -> Calendar {
                 .location(&lesson.location)
                 .starts(lesson.start.to_utc())
                 .ends(lesson.end.to_utc())
-                .uid(format!("{}-{}-{}", lesson.subject, lesson.start, lesson.end).as_str())
+                .uid(format!("{}-{}", lesson.subject, lesson.id.unwrap_or(-1)).as_str())
                 .done(),
         );
     }
