@@ -6,3 +6,10 @@ services:
     environment:
       POSTGRES_PASSWORD: example
     ports: [5432:5432]
+  scraper:
+    build: koyomi-scraper
+    env_file: .env
+  api:
+    build: koyomi-api
+    env_file: .env
+    ports: [3000:3000]

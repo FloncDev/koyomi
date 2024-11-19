@@ -10,7 +10,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with(fmt::layer())
         .with(EnvFilter::from_default_env())
         .init();
-    dotenvy::dotenv().expect("Could not find .env file");
+    dotenvy::dotenv().ok();
 
     // Setup state
     tracing::debug!("Attempting database connection");

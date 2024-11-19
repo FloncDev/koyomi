@@ -6,7 +6,7 @@ use sqlx::postgres::PgPoolOptions;
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt().init();
-    dotenvy::dotenv().expect("Could not find .env file");
+    dotenvy::dotenv().ok();
 
     // Setup state
     tracing::debug!("Attempting database connection");
@@ -29,7 +29,7 @@ async fn main() {
         .merge(routes::get_router())
         .with_state(state);
 
-    let listner = tokio::net::TcpListener::bind("127.0.0.1:3000")
+    let listner = tokio::net::TcpListener::bind("0.0.0.0:3000")
         .await
         .expect("Cannot bind to port 3000");
 
